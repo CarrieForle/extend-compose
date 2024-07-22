@@ -329,9 +329,21 @@ vk97 & sc035::SendInput "{Click 42 0 0 Rel}"
 vk97 & Enter::^BackSpace
 vk97 & Space::Enter
 
-vk97 & WheelDown::VD.goToRelativeDesktopNum(1)
-vk97 & WheelUp::VD.goToRelativeDesktopNum(-1)
-vk97 & LButton::VD.goToRelativeDesktopNum(-1)
+goToRelativeDesktopNumIfNotOneDesktop(num) {
+    if vd.GetCount() > 1 {
+        VD.goToRelativeDesktopNum(num)
+    }
+}
+
+goToDesktopNumIfNotOneDesktop(num) {
+    if vd.GetCount() > 1 {
+        VD.goToRelativeDesktopNum(num)
+    }
+}
+
+vk97 & WheelDown::goToRelativeDesktopNumIfNotOneDesktop(1)
+vk97 & WheelUp::goToRelativeDesktopNumIfNotOneDesktop(-1)
+vk97 & LButton::goToRelativeDesktopNumIfNotOneDesktop(-1)
 vk97 & RButton::{
     current_desktop_num := VD.getCurrentDesktopNum()
     
@@ -341,11 +353,26 @@ vk97 & RButton::{
     }
     else
     {
-        vd.goToRelativeDesktopNum(1)
+        VD.goToRelativeDesktopNum(1)
     }
 }
-vk97 & XButton1::VD.goToDesktopNum(VD.GetCount())
-vk97 & XButton2::VD.goToDesktopNum(1)
+vk97 & XButton1::goToDesktopNumIfNotOneDesktop(VD.GetCount())
+vk97 & XButton2::goToDesktopNumIfNotOneDesktop(1)
+vk97 & Left::goToRelativeDesktopNumIfNotOneDesktop(-1)
+vk97 & Right::{
+    current_desktop_num := VD.getCurrentDesktopNum()
+    
+    if current_desktop_num == VD.GetCount() and VD.getCount() <= 8
+    {
+        VD.createDesktop(true)
+    }
+    else
+    {
+        VD.goToRelativeDesktopNum(1)
+    }
+}
+vk97 & Up::goToRelativeDesktopNumIfNotOneDesktop(-1)
+vk97 & Down::goToRelativeDesktopNumIfNotOneDesktop(-1)
 
 vk98 & sc002::!
 vk98 & sc003::@
@@ -442,61 +469,21 @@ vk99 & sc033::-
 vk99 & sc034::=
 vk99 & sc035::return
 
-#Numpad1::{
-    if 1 <= VD.getCount()
-    {
-        VD.goToDesktopNum(1)
-    }
-}
-#Numpad2::{
-    if 2 <= VD.getCount()
-    {
-        VD.goToDesktopNum(2)
-    }
-}
-#Numpad3::{
-    if 3 <= VD.getCount()
-    {
-        VD.goToDesktopNum(3)
+goToDesktopNumCheck(num) {
+    if num <= VD.getCount() {
+        VD.goToDesktopNum(num)
     }
 }
 
-#Numpad4::{
-    if 4 <= VD.getCount()
-    {
-        VD.goToDesktopNum(4)
-    }
-}
-#Numpad5::{
-    if 5 <= VD.getCount()
-    {
-        VD.goToDesktopNum(5)
-    }
-}
-#Numpad6::{
-    if 6 <= VD.getCount()
-    {
-        VD.goToDesktopNum(6)
-    }
-}
-#Numpad7::{
-    if 7 <= VD.getCount()
-    {
-        VD.goToDesktopNum(7)
-    }
-}
-#Numpad8::{
-    if 8 <= VD.getCount()
-    {
-        VD.goToDesktopNum(8)
-    }
-}
-#Numpad9::{
-    if 9 <= VD.getCount()
-    {
-        VD.goToDesktopNum(9)
-    }
-}
+#Numpad1::goToDesktopNumCheck(1)
+#Numpad2::goToDesktopNumCheck(2)
+#Numpad3::goToDesktopNumCheck(3)
+#Numpad4::goToDesktopNumCheck(4)
+#Numpad5::goToDesktopNumCheck(5)
+#Numpad6::goToDesktopNumCheck(6)
+#Numpad7::goToDesktopNumCheck(7)
+#Numpad8::goToDesktopNumCheck(8)
+#Numpad9::goToDesktopNumCheck(9)
 
 ih := InputHook("V L" . maximumComposeKeyLength, "{Left}{Up}{Right}{Down}{Home}{PgUp}{End}{PgDn}"),
 oldBuffer := ""
