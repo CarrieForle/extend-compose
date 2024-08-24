@@ -244,7 +244,7 @@ RAlt::toggleSuspension
 	KeyWait("CapsLock")
 }
 
-~*CapsLock up::{
+*CapsLock up::{
     SendEvent "{vk97 Up}{vk98 Up}{vk99 Up}"
 }
 
