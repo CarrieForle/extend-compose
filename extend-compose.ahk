@@ -167,14 +167,18 @@ loop wordList.Length
 Loop Read "compose.txt"
 {
 	if A_LoopReadLine == ""
-		continue
+	    continue
+	
 	delimiterChar := SubStr(A_LoopReadLine, 1, 1)
+	
 	if delimiterChar == ";" ||
-	delimiterChar == "`n" ||
-	delimiterChar == A_Tab ||
-	delimiterChar == A_Space
-		continue
-	keypair := StrSplit(A_LoopReadLine, delimiterChar,, 3)
+	    delimiterChar == "`n" ||
+	    delimiterChar == A_Tab ||
+	    delimiterChar == A_Space
+	    continue
+	
+	keypair := StrSplit(A_LoopReadLine, delimiterChar, , 3)
+	
 	if keypair.Length < 3 || keypair[2] == "" ||keypair[3] == ""
 	{
 		if "No" == MsgBox(A_LoopReadLine " is not a valid compose keypair.`n`nClick `"Yes`" to cuntinue and ignore this keypair.`nClick `"No`" to terminate the script.", "Error in compose.txt", 4)
@@ -201,15 +205,18 @@ else
 #InputLevel 1
 #SuspendExempt
 #HotIf A_IsSuspended
-CapsLock::Capslock
-#HotIf ; for CapsLock to be toggleabde while suspending
+~CapsLock::
+{
+    SetCapsLockState GetKeyState("CapsLock", "T") ? "AlwaysOff" : "ALwaysOn"
+}
+#HotIf ; for CapsLock to be toggleable while suspending
 RAlt::toggleSuspension
 ^+sc006::
 {
-    SendEvent("{vk97 Up}{vk98 Up}{vk99 DownR}"),
-	SoundBeep(3000, 30),
+    SendEvent("{vk97 Up}{vk98 Up}{vk99 Up}"),
+	SoundBeep(3000, 50),
+	SoundBeep(4500, 50),
 	Reload()
-	SoundBeep(4500, 30)
 }
 ^+sc029::ExitApp
 #SuspendExempt false
