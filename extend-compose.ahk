@@ -208,6 +208,8 @@ else
 ~CapsLock::
 {
     SetCapsLockState GetKeyState("CapsLock", "T") ? "AlwaysOff" : "ALwaysOn"
+
+    KeyWait("CapsLock")
 }
 #HotIf ; for CapsLock to be toggleable while suspending
 RAlt::toggleSuspension
@@ -260,6 +262,37 @@ HoldKeyNormal(key) {
 	KeyWait(key, "L")
 }
 
+MoveMouse(key, dir)
+{
+    SendMode "Event"
+    SetMouseDelay 10
+    SetDefaultMouseSpeed 0
+    scale := 7
+
+    while (GetKeyState(key, "P"))
+    {
+        switch dir, false
+        {
+            case "up":
+                Click 0, -scale, , 0, "Relative"
+            case "down":
+                Click 0, scale, , 0, "Relative"
+            case "left":
+                Click -scale, 0, , 0, "Relative"
+            case "right":
+                Click scale, 0, , 0, "Relative"
+            case "up left":
+                Click -scale, -scale, , 0, "Relative"
+            case "up right":
+                Click scale, -scale, , 0, "Relative"
+            case "down left":
+                Click -scale, scale, , 0, "Relative"
+            case "down right":
+                Click scale, scale, , 0, "Relative"
+        }
+    }
+}
+
 vk97 & Esc::CapsLock
 vk97 & F1::HoldKey "Media_Play_Pause"
 vk97 & F1 up::Send "{blind}{Media_Play_Pause Up}"
@@ -281,11 +314,11 @@ vk97 & F11::changeBrightness(getCurrentBrightNess() - brightnessStep)
 vk97 & F12::changeBrightness(getCurrentBrightNess() + brightnessStep)
 
 vk97 & sc029::PrintScreen
-vk97 & sc002::F1
-vk97 & sc003::F2
-vk97 & sc004::F3
-vk97 & sc005::F4
-vk97 & sc006::F5
+vk97 & sc002::MoveMouse("sc002", "left")
+vk97 & sc003::MoveMouse("sc003", "right")
+vk97 & sc004::LButton
+vk97 & sc005::RButton
+vk97 & sc006::MButton
 vk97 & sc007::F6
 vk97 & sc008::F7
 vk97 & sc009::F8
@@ -298,7 +331,7 @@ vk97 & sc010::Esc
 vk97 & sc011::WheelUp
 vk97 & sc012::Browser_Back
 vk97 & sc013::Browser_Forward
-vk97 & sc014::SendInput "{Click 0 -20 0 Rel}"
+vk97 & sc014::MoveMouse("sc014", "up")
 vk97 & sc015::PgUp
 vk97 & sc016::Home
 vk97 & sc017::Up
@@ -311,7 +344,7 @@ vk97 & sc01e::Alt
 vk97 & sc01f::WheelDown
 vk97 & sc020::Shift
 vk97 & sc021::Ctrl
-vk97 & sc022::SendInput "{Click 0 20 0 Rel}"
+vk97 & sc022::MoveMouse("sc022", "down")
 vk97 & sc023::PgDn
 vk97 & sc024::Left
 vk97 & sc025::Down
@@ -323,15 +356,15 @@ vk97 & sc02b::SendInput "{Click " A_ScreenWidth / 2 " " A_ScreenHeight / 2 " 0}"
 
 vk97 & sc02c::SendInput "+{Home}{Backspace}"
 vk97 & sc02d::SendInput "+{End}{Backspace}"
-vk97 & sc02e::^c
-vk97 & sc02f::^v
+vk97 & sc02e::XButton1
+vk97 & sc02f::XButton2
 vk97 & sc030::Ins
 
-vk97 & sc031::LButton
-vk97 & sc032::MButton
-vk97 & sc033::RButton
-vk97 & sc034::SendInput "{Click -42 0 0 Rel}"
-vk97 & sc035::SendInput "{Click 42 0 0 Rel}"
+vk97 & sc031::F1
+vk97 & sc032::F2
+vk97 & sc033::F3
+vk97 & sc034::F4
+vk97 & sc035::F5
 
 vk97 & Enter::^BackSpace
 vk97 & Space::Enter
@@ -382,8 +415,8 @@ vk97 & Up::goToRelativeDesktopNumIfNotOneDesktop(-1)
 vk97 & Down::goToRelativeDesktopNumIfNotOneDesktop(-1)
 
 vk98 & sc002::!
-vk98 & sc003::@
-vk98 & sc004::#
+vk98 & sc003::£
+vk98 & sc004::€
 vk98 & sc005::$
 vk98 & sc006::%
 vk98 & sc007::^
@@ -434,7 +467,7 @@ vk99 & sc003::
 vk99 & sc004::
 vk99 & sc005::
 vk99 & sc006::
-vk99 & sc0cd07::
+vk99 & sc007::
 vk99 & sc008::
 vk99 & sc009::
 vk99 & sc00a::
