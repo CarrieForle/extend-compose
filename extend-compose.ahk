@@ -205,7 +205,7 @@ else
 #InputLevel 1
 #SuspendExempt
 #HotIf A_IsSuspended
-~CapsLock::
+CapsLock::
 {
     SetCapsLockState GetKeyState("CapsLock", "T") ? "AlwaysOff" : "ALwaysOn"
 
@@ -223,7 +223,7 @@ RAlt::toggleSuspension
 ^+sc029::ExitApp
 #SuspendExempt false
 
-~*CapsLock::
+*CapsLock::
 {
     global
 	if A_PriorHotkey == "*CapsLock up" 
