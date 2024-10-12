@@ -14,7 +14,6 @@ SetKeyDelay -1
 SendMode "Event"
 ProcessSetPriority "A"
 FileEncoding "UTF-8" ; https://www.autohotkey.com/docs/v2/lib/File.htm#Encoding
-capsLockPresses := 0
 
 ;@Ahk2Exe-SetMainIcon resource\main.ico
 ;@Ahk2Exe-AddResource resource\suspend.ico, 206
@@ -225,9 +224,12 @@ RAlt::toggleSuspension
 
 *CapsLock::
 {
-    global
+    static capsLockPresses := 0
+    global timeSinceExtendRestart
+    global intervalAllowedForExtendLayerActivation
+
 	if A_PriorHotkey == "*CapsLock up" 
-		&& A_TickCount - timeSinceExtendPrestart <= intervalAllowedForExtendLayerActivation
+		&& A_TickCount - timeSinceExtendRestart <= intervalAllowedForExtendLayerActivation
 		capsLockPresses++
 	else
 		capsLockPresses := 0
@@ -242,11 +244,11 @@ RAlt::toggleSuspension
 			SendEvent "{vk97 Up}{vk98 Up}{vk99 DownR}"
 	}
 
-	timeSinceExtendPrestart := A_TickCount,
+	timeSinceExtendRestart := A_TickCount,
 	KeyWait("CapsLock")
 }
 
-*CapsLock up::{
+*CapsLock up:: {
     SendEvent "{vk97 Up}{vk98 Up}{vk99 Up}"
 }
 
