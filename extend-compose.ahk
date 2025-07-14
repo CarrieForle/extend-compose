@@ -18,11 +18,11 @@ FileEncoding "UTF-8" ; https://www.autohotkey.com/docs/v2/lib/File.htm#Encoding
 ;@Ahk2Exe-SetMainIcon resource\main.ico
 ;@Ahk2Exe-AddResource resource\suspend.ico, 206
 
-if FileExist("xarty_config.ini") == ""
+if FileExist("extend-compose-config.ini") == ""
 {
 	FileAppend "
 	(
-    [xarty-global]
+    [global]
 
     ; Upon the Compose sequence complete typing,
     ; the window for you to press Compose key
@@ -54,7 +54,7 @@ if FileExist("xarty_config.ini") == ""
     ; This property should be an integer 
     ; between 1 and 100
     brightnessStep = 3
-	)", "xarty_config.ini", "UTF-16"
+	)", "extend-compose-config.ini", "UTF-16"
 }
 
 if FileExist("compose.txt") == ""
@@ -105,10 +105,10 @@ getCurrentBrightNess()
 
 try
 {
-	intervalAllowedForComposeValidation := Integer(IniRead("xarty_config.ini", "xarty-global", "intervalAllowedForComposeValidation")),
-	intervalAllowedForExtendLayerActivation := Integer(IniRead("xarty_config.ini", "xarty-global", "intervalAllowedForExtendLayerActivation"))
-	beepOnToggleScriptSuspension := IniRead("xarty_config.ini", "xarty-global", "beepOnToggleScriptSuspension")
-	brightnessStep := Integer(IniRead("xarty_config.ini", "xarty-global", "brightnessStep"))
+	intervalAllowedForComposeValidation := Integer(IniRead("extend-compose-config.ini", "global", "intervalAllowedForComposeValidation")),
+	intervalAllowedForExtendLayerActivation := Integer(IniRead("extend-compose-config.ini", "global", "intervalAllowedForExtendLayerActivation"))
+	beepOnToggleScriptSuspension := IniRead("extend-compose-config.ini", "global", "beepOnToggleScriptSuspension")
+	brightnessStep := Integer(IniRead("extend-compose-config.ini", "global", "brightnessStep"))
     if beepOnToggleScriptSuspension = "true"
 		toggleSuspension := () => (
 			beepHelper(),	
@@ -125,7 +125,7 @@ try
 }
 catch Error as e
 {
-	MsgBox e.Message . " Invalid or missing properties found in xarty_config.ini.`nThe program will be terminated."
+	MsgBox e.Message . " Invalid or missing properties found in extend-compose-config.ini.`nThe program will be terminated."
 	ExitApp
 }
 
@@ -148,8 +148,8 @@ runAsAdmin(ItemName, ItemPos, MyMenu)
     }
 }
 
-A_TrayMenu.Add("See Compose", (ItemName, ItemPos, MyMenu) => Run("compose.txt"),),
-A_TrayMenu.Add("Config", (ItemName, ItemPos, MyMenu) => Run("xarty_config.ini"),),
+A_TrayMenu.Add("Edit Compose", (ItemName, ItemPos, MyMenu) => Run("compose.txt"),),
+A_TrayMenu.Add("Config", (ItemName, ItemPos, MyMenu) => Run("extend-compose-config.ini"),),
 A_TrayMenu.Add("Run as Admin", runAsAdmin)
 
 if (A_IsAdmin)
