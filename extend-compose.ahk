@@ -379,7 +379,7 @@ goToRelativeDesktopNumIfNotOneDesktop(num) {
 
 goToDesktopNumIfNotOneDesktop(num) {
     if vd.GetCount() > 1 {
-        VD.goToRelativeDesktopNum(num)
+        VD.goToDesktopNum(num)
     }
 }
 
@@ -398,8 +398,8 @@ vk97 & RButton::{
         VD.goToRelativeDesktopNum(1)
     }
 }
-vk97 & XButton1::goToDesktopNumIfNotOneDesktop(VD.GetCount())
-vk97 & XButton2::goToDesktopNumIfNotOneDesktop(1)
+vk97 & XButton1::goToDesktopNumIfNotOneDesktop(1)
+vk97 & XButton2::goToDesktopNumIfNotOneDesktop(VD.GetCount())
 vk97 & Left::goToRelativeDesktopNumIfNotOneDesktop(-1)
 vk97 & Right::{
     current_desktop_num := VD.getCurrentDesktopNum()
@@ -413,9 +413,15 @@ vk97 & Right::{
         VD.goToRelativeDesktopNum(1)
     }
 }
-vk97 & Up::goToRelativeDesktopNumIfNotOneDesktop(-1)
+vk97 & Up::goToRelativeDesktopNumIfNotOneDesktop(1)
 vk97 & Down::goToRelativeDesktopNumIfNotOneDesktop(-1)
 
+vk98 & F1::HoldKey "Volume_Mute"
+vk98 & F1 up::Send "{blind}{Volume_Mute Up}"
+vk98 & F2::Volume_Down
+vk98 & F3::Volume_Up
+vk98 & F4::HoldKey "Launch_Media"
+vk98 & F4 up::Send "{blind}{Launch_Media Up}"
 vk98 & sc002::!
 vk98 & sc003::£
 vk98 & sc004::€
@@ -452,14 +458,14 @@ vk98 & sc025::Numpad2
 vk98 & sc026::Numpad3
 vk98 & sc027::NumpadEnter
 vk98 & sc028::'
-vk98 & sc02c::^z
-vk98 & sc02d::^x
-vk98 & sc02e::^c
-vk98 & sc02f::^v
-vk98 & sc030::LButton
+vk98 & sc02c::changeBrightness(getCurrentBrightNess() - brightnessStep)
+vk98 & sc02d::changeBrightness(getCurrentBrightNess() + brightnessStep)
+vk98 & sc02e::goToRelativeDesktopNumIfNotOneDesktop(-1)
+vk98 & sc02f::goToRelativeDesktopNumIfNotOneDesktop(1)
+vk98 & sc030::goToDesktopNumIfNotOneDesktop(1)
 vk98 & sc031:::
 vk98 & sc032::Numpad0
-vk98 & sc033::Numpad0
+vk98 & sc033::,
 vk98 & sc034::NumpadDot
 vk98 & sc035::NumpadDiv
 
