@@ -54,6 +54,19 @@ if FileExist("extend-compose-config.ini") == ""
     ; This property should be an integer 
     ; between 1 and 100
     brightnessStep = 3
+
+    ; Assign name for each virtual desktop. 
+    ; Support up to 9 desktops.
+    [virtual_desktop]
+    ; virtualDesktop1 = "Desktop 1"
+    ; virtualDesktop2 = "Desktop 2"
+    ; virtualDesktop3 = "Desktop 3"
+    ; virtualDesktop4 = "Desktop 4"
+    ; virtualDesktop5 = "Desktop 5"
+    ; virtualDesktop6 = "Desktop 6"
+    ; virtualDesktop7 = "Desktop 7"
+    ; virtualDesktop8 = "Desktop 8"
+    ; virtualDesktop9 = "Desktop 9"
 	)", "extend-compose-config.ini", "UTF-16"
 }
 
@@ -67,7 +80,7 @@ if FileExist("compose.txt") == ""
 	=btw=By the way
 	=name=CarrieForle
 	=lol=(ﾟ∀。)
-	)", "compose.txt"
+	)", "compose.txt", "UTF-8"
 }
 
 
@@ -106,9 +119,16 @@ getCurrentBrightNess()
 try
 {
 	intervalAllowedForComposeValidation := Integer(IniRead("extend-compose-config.ini", "global", "intervalAllowedForComposeValidation")),
-	intervalAllowedForExtendLayerActivation := Integer(IniRead("extend-compose-config.ini", "global", "intervalAllowedForExtendLayerActivation"))
-	beepOnToggleScriptSuspension := IniRead("extend-compose-config.ini", "global", "beepOnToggleScriptSuspension")
+	intervalAllowedForExtendLayerActivation := Integer(IniRead("extend-compose-config.ini", "global", "intervalAllowedForExtendLayerActivation")),
+	beepOnToggleScriptSuspension := IniRead("extend-compose-config.ini", "global", "beepOnToggleScriptSuspension"),
 	brightnessStep := Integer(IniRead("extend-compose-config.ini", "global", "brightnessStep"))
+
+    virtualDesktopNames := Array()
+    loop 8 {
+        desktop := IniRead("extend-compose-config.ini", "virtual_desktop", "virtualDesktop" . (A_Index + 1), ""),
+        virtualDesktopNames.Push(desktop)
+    }
+    
     if beepOnToggleScriptSuspension = "true"
 		toggleSuspension := () => (
 			beepHelper(),	
@@ -148,9 +168,15 @@ runAsAdmin(ItemName, ItemPos, MyMenu)
     }
 }
 
+trayReload(ItemName, ItemPos, MyMenu) {
+    SendEvent("{vk97 Up}{vk98 Up}{vk99 Up}"),
+    Reload()
+}
+
 A_TrayMenu.Add("Edit Compose", (ItemName, ItemPos, MyMenu) => Run("compose.txt"),),
 A_TrayMenu.Add("Config", (ItemName, ItemPos, MyMenu) => Run("extend-compose-config.ini"),),
-A_TrayMenu.Add("Run as Admin", runAsAdmin)
+A_TrayMenu.Add("Run as Admin", runAsAdmin),
+A_TrayMenu.Add("Reload", trayReload)
 
 if (A_IsAdmin)
 {
@@ -383,36 +409,31 @@ goToDesktopNumIfNotOneDesktop(num) {
     }
 }
 
+goOrCreateNextDesktop() {
+    currentDesktopNum := VD.getCurrentDesktopNum()
+
+    if currentDesktopNum == VD.GetCount() and VD.getCount() <= 8 {
+        VD.createDesktop(true)
+        
+        ; The first element is the 2nd desktop
+        if (virtualDesktopNames[currentDesktopNum] != "") {
+            VD.setNameToDesktopNum(virtualDesktopNames[currentDesktopNum], currentDesktopNum + 1)
+        }
+    }
+    else
+    {
+        VD.goToRelativeDesktopNum(1)
+    }
+}
+
 vk97 & WheelDown::goToRelativeDesktopNumIfNotOneDesktop(1)
 vk97 & WheelUp::goToRelativeDesktopNumIfNotOneDesktop(-1)
 vk97 & LButton::goToRelativeDesktopNumIfNotOneDesktop(-1)
-vk97 & RButton::{
-    current_desktop_num := VD.getCurrentDesktopNum()
-    
-    if current_desktop_num == VD.GetCount() and VD.getCount() <= 8
-    {
-        VD.createDesktop(true)
-    }
-    else
-    {
-        VD.goToRelativeDesktopNum(1)
-    }
-}
+vk97 & RButton::goOrCreateNextDesktop()
 vk97 & XButton1::goToDesktopNumIfNotOneDesktop(1)
 vk97 & XButton2::goToDesktopNumIfNotOneDesktop(VD.GetCount())
 vk97 & Left::goToRelativeDesktopNumIfNotOneDesktop(-1)
-vk97 & Right::{
-    current_desktop_num := VD.getCurrentDesktopNum()
-    
-    if current_desktop_num == VD.GetCount() and VD.getCount() <= 8
-    {
-        VD.createDesktop(true)
-    }
-    else
-    {
-        VD.goToRelativeDesktopNum(1)
-    }
-}
+vk97 & Right::goOrCreateNextDesktop()
 vk97 & Up::goToRelativeDesktopNumIfNotOneDesktop(1)
 vk97 & Down::goToRelativeDesktopNumIfNotOneDesktop(-1)
 
