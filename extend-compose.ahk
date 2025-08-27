@@ -58,7 +58,6 @@ if FileExist("extend-compose-config.ini") == ""
     ; Assign name for each virtual desktop. 
     ; Support up to 9 desktops.
     [virtual_desktop]
-    ; virtualDesktop1 = "Desktop 1"
     ; virtualDesktop2 = "Desktop 2"
     ; virtualDesktop3 = "Desktop 3"
     ; virtualDesktop4 = "Desktop 4"
