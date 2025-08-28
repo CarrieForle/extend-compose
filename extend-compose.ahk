@@ -338,7 +338,17 @@ vk97 & F8 up::Send "{blind}{Launch_Media Up}"
 vk97 & F9::HoldKey "Launch_App2"
 vk97 & F9 up::Send "{blind}{Launch_App2 Up}"
 vk97 & F11::changeBrightness(getCurrentBrightNess() - brightnessStep)
-vk97 & F12::changeBrightness(getCurrentBrightNess() + brightnessStep)
+vk97 & F12:: changeBrightness(getCurrentBrightNess() + brightnessStep)
+    
+vk97 & Numpad1::goToDesktopNumCheck(1)
+vk97 & Numpad2::goToDesktopNumCheck(2)
+vk97 & Numpad3::goToDesktopNumCheck(3)
+vk97 & Numpad4::goToDesktopNumCheck(4)
+vk97 & Numpad5::goToDesktopNumCheck(5)
+vk97 & Numpad6::goToDesktopNumCheck(6)
+vk97 & Numpad7::goToDesktopNumCheck(7)
+vk97 & Numpad8::goToDesktopNumCheck(8)
+vk97 & Numpad9::goToDesktopNumCheck(9)
 
 vk97 & sc029::PrintScreen
 vk97 & sc002::MoveMouse("sc002", "left")
@@ -542,16 +552,6 @@ goToDesktopNumCheck(num) {
         VD.goToDesktopNum(num)
     }
 }
-
-#Numpad1::goToDesktopNumCheck(1)
-#Numpad2::goToDesktopNumCheck(2)
-#Numpad3::goToDesktopNumCheck(3)
-#Numpad4::goToDesktopNumCheck(4)
-#Numpad5::goToDesktopNumCheck(5)
-#Numpad6::goToDesktopNumCheck(6)
-#Numpad7::goToDesktopNumCheck(7)
-#Numpad8::goToDesktopNumCheck(8)
-#Numpad9::goToDesktopNumCheck(9)
 
 ih := InputHook("V L" . maximumComposeKeyLength, "{Left}{Up}{Right}{Down}{Home}{PgUp}{End}{PgDn}"),
 oldBuffer := ""
