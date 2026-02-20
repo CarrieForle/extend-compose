@@ -1,4 +1,4 @@
-﻿#Include "VD.ah2"
+#Include "VD.ah2"
 
 #Requires AutoHotkey >=2
 #SingleInstance Force
@@ -443,8 +443,8 @@ vk97 & XButton1::goToDesktopNumIfNotOneDesktop(1)
 vk97 & XButton2::goToDesktopNumIfNotOneDesktop(VD.GetCount())
 vk97 & Left::goToRelativeDesktopNumIfNotOneDesktop(-1)
 vk97 & Right::goOrCreateNextDesktop()
-vk97 & Up::goToRelativeDesktopNumIfNotOneDesktop(1)
-vk97 & Down::goToRelativeDesktopNumIfNotOneDesktop(-1)
+vk97 & Up::goToRelativeDesktopNumIfNotOneDesktop(-1)
+vk97 & Down::goToRelativeDesktopNumIfNotOneDesktop(1)
 
 vk98 & F1::HoldKey "Volume_Mute"
 vk98 & F1 up::Send "{blind}{Volume_Mute Up}"
