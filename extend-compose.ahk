@@ -437,8 +437,6 @@ goOrCreateNextDesktop() {
 
 vk97 & WheelDown::goToRelativeDesktopNumIfNotOneDesktop(1)
 vk97 & WheelUp::goToRelativeDesktopNumIfNotOneDesktop(-1)
-vk97 & LButton::goToRelativeDesktopNumIfNotOneDesktop(-1)
-vk97 & RButton::goOrCreateNextDesktop()
 vk97 & XButton1::goToDesktopNumIfNotOneDesktop(1)
 vk97 & XButton2::goToDesktopNumIfNotOneDesktop(VD.GetCount())
 vk97 & Left::goToRelativeDesktopNumIfNotOneDesktop(-1)
